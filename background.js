@@ -38,7 +38,6 @@ class BackgroundService {
   async setDefaultSettings() {
     const defaultSettings = {
       targetChannels: [],
-      enabled: true,
       videoLengthThreshold: 10, // minutes
       shortsEnabled: true,
       videoAutoPlayEnabled: true,
@@ -105,20 +104,17 @@ class BackgroundService {
     try {
       const result = await chrome.storage.sync.get([
         'targetChannels',
-        'enabled', 
         'videoLengthThreshold'
       ]);
       
       return {
         targetChannels: result.targetChannels,
-        enabled: result.enabled !== false, // default to true
         videoLengthThreshold: result.videoLengthThreshold || 10
       };
     } catch (error) {
       console.error('Error getting settings:', error);
       return {
         targetChannels: ['Theo - t3․gg',],
-        enabled: true,
         videoLengthThreshold: 10
       };
     }

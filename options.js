@@ -3,7 +3,6 @@
 class OptionsManager {
   constructor() {
     this.settings = {
-      enabled: true,
       targetChannels: [],
       videoLengthThreshold: 10,
       shortsEnabled: true,
@@ -22,7 +21,6 @@ class OptionsManager {
   async loadSettings() {
     try {
       const result = await chrome.storage.sync.get([
-        'enabled',
         'targetChannels', 
         'videoLengthThreshold',
         'shortsEnabled',
@@ -31,7 +29,6 @@ class OptionsManager {
       ]);
       
       this.settings = {
-        enabled: result.enabled !== false,
         targetChannels: result.targetChannels || [],
         videoLengthThreshold: result.videoLengthThreshold || 10,
         shortsEnabled: result.shortsEnabled !== false,
@@ -45,13 +42,6 @@ class OptionsManager {
   }
 
   setupEventListeners() {
-    // Enable toggle
-    const enableToggle = document.getElementById('enableToggle');
-    enableToggle.addEventListener('click', () => {
-      this.settings.enabled = !this.settings.enabled;
-      this.updateToggles();
-    });
-
     // Shorts toggle
     const shortsToggle = document.getElementById('shortsToggle');
     shortsToggle.addEventListener('click', () => {
@@ -106,9 +96,6 @@ class OptionsManager {
   }
 
   updateToggles() {
-    const enableToggle = document.getElementById('enableToggle');
-    enableToggle.classList.toggle('active', this.settings.enabled);
-    
     const shortsToggle = document.getElementById('shortsToggle');
     shortsToggle.classList.toggle('active', this.settings.shortsEnabled);
     
@@ -261,7 +248,6 @@ class OptionsManager {
   resetSettings() {
     if (confirm('Are you sure you want to reset all settings to default?')) {
       this.settings = {
-        enabled: true,
         targetChannels: [],
         videoLengthThreshold: 10,
         shortsEnabled: true,
