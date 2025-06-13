@@ -307,6 +307,16 @@
                     <span>Enable Extension</span>
                     <div class="toggle" id="enableToggle"></div>
                 </div>
+                
+                <div class="toggle-container">
+                    <span>Enable YouTube Shorts Popup</span>
+                    <div class="toggle" id="shortsToggle"></div>
+                </div>
+                
+                <div class="toggle-container">
+                    <span>Enable Video Auto-Play</span>
+                    <div class="toggle" id="videoAutoPlayToggle"></div>
+                </div>
             </div>
 
             <div class="section">
@@ -320,8 +330,18 @@
             </div>
 
             <div class="section">
+                <h2>🎥 Video Auto-Play Settings</h2>
+                <p style="color: #666; margin-bottom: 20px;">Configure the video that will auto-play in the popup.</p>
+                
+                <div class="input-group">
+                    <label for="autoPlayVideoUrl">Auto-Play Video URL:</label>
+                    <input type="url" id="autoPlayVideoUrl" placeholder="https://www.youtube.com/watch?v=..." value="https://www.youtube.com/watch?v=zZ7AimPACzc">
+                </div>
+            </div>
+
+            <div class="section">
                 <h2>⏱️ Video Length Threshold</h2>
-                <p style="color: #666; margin-bottom: 20px;">Show popup only for videos longer than this duration.</p>
+                <p style="color: #666; margin-bottom: 20px;">Show popups only for videos longer than this duration.</p>
                 
                 <div class="slider-container">
                     <input type="range" min="5" max="60" value="10" class="slider" id="lengthSlider">

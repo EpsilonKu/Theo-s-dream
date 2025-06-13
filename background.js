@@ -39,7 +39,10 @@ class BackgroundService {
     const defaultSettings = {
       targetChannels: [],
       enabled: true,
-      videoLengthThreshold: 10 // minutes
+      videoLengthThreshold: 10, // minutes
+      shortsEnabled: true,
+      videoAutoPlayEnabled: true,
+      autoPlayVideoUrl: 'https://www.youtube.com/watch?v=zZ7AimPACzc'
     };
 
     try {

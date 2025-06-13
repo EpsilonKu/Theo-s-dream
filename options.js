@@ -5,7 +5,10 @@ class OptionsManager {
     this.settings = {
       enabled: true,
       targetChannels: [],
-      videoLengthThreshold: 10
+      videoLengthThreshold: 10,
+      shortsEnabled: true,
+      videoAutoPlayEnabled: true,
+      autoPlayVideoUrl: 'https://www.youtube.com/watch?v=zZ7AimPACzc'
     };
     this.init();
   }
@@ -21,13 +24,19 @@ class OptionsManager {
       const result = await chrome.storage.sync.get([
         'enabled',
         'targetChannels', 
-        'videoLengthThreshold'
+        'videoLengthThreshold',
+        'shortsEnabled',
+        'videoAutoPlayEnabled',
+        'autoPlayVideoUrl'
       ]);
       
       this.settings = {
         enabled: result.enabled !== false,
-        targetChannels: result.targetChannels,
-        videoLengthThreshold: result.videoLengthThreshold || 10
+        targetChannels: result.targetChannels || [],
+        videoLengthThreshold: result.videoLengthThreshold || 10,
+        shortsEnabled: result.shortsEnabled !== false,
+        videoAutoPlayEnabled: result.videoAutoPlayEnabled !== false,
+        autoPlayVideoUrl: result.autoPlayVideoUrl || 'https://www.youtube.com/watch?v=zZ7AimPACzc'
       };
     } catch (error) {
       console.error('Error loading settings:', error);
@@ -40,7 +49,27 @@ class OptionsManager {
     const enableToggle = document.getElementById('enableToggle');
     enableToggle.addEventListener('click', () => {
       this.settings.enabled = !this.settings.enabled;
-      this.updateToggle();
+      this.updateToggles();
+    });
+
+    // Shorts toggle
+    const shortsToggle = document.getElementById('shortsToggle');
+    shortsToggle.addEventListener('click', () => {
+      this.settings.shortsEnabled = !this.settings.shortsEnabled;
+      this.updateToggles();
+    });
+
+    // Video auto-play toggle
+    const videoAutoPlayToggle = document.getElementById('videoAutoPlayToggle');
+    videoAutoPlayToggle.addEventListener('click', () => {
+      this.settings.videoAutoPlayEnabled = !this.settings.videoAutoPlayEnabled;
+      this.updateToggles();
+    });
+
+    // Auto-play video URL input
+    const autoPlayVideoUrl = document.getElementById('autoPlayVideoUrl');
+    autoPlayVideoUrl.addEventListener('input', (e) => {
+      this.settings.autoPlayVideoUrl = e.target.value;
     });
 
     // Length threshold slider
@@ -70,14 +99,26 @@ class OptionsManager {
   }
 
   renderUI() {
-    this.updateToggle();
+    this.updateToggles();
     this.renderChannels();
     this.updateSliders();
+    this.updateVideoUrl();
   }
 
-  updateToggle() {
-    const toggle = document.getElementById('enableToggle');
-    toggle.classList.toggle('active', this.settings.enabled);
+  updateToggles() {
+    const enableToggle = document.getElementById('enableToggle');
+    enableToggle.classList.toggle('active', this.settings.enabled);
+    
+    const shortsToggle = document.getElementById('shortsToggle');
+    shortsToggle.classList.toggle('active', this.settings.shortsEnabled);
+    
+    const videoAutoPlayToggle = document.getElementById('videoAutoPlayToggle');
+    videoAutoPlayToggle.classList.toggle('active', this.settings.videoAutoPlayEnabled);
+  }
+
+  updateVideoUrl() {
+    const autoPlayVideoUrl = document.getElementById('autoPlayVideoUrl');
+    autoPlayVideoUrl.value = this.settings.autoPlayVideoUrl;
   }
 
   renderChannels() {
@@ -222,7 +263,10 @@ class OptionsManager {
       this.settings = {
         enabled: true,
         targetChannels: [],
-        videoLengthThreshold: 10
+        videoLengthThreshold: 10,
+        shortsEnabled: true,
+        videoAutoPlayEnabled: true,
+        autoPlayVideoUrl: 'https://www.youtube.com/watch?v=zZ7AimPACzc'
       };
       
       this.renderUI();

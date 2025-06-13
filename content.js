@@ -5,6 +5,10 @@ class YouTubeShortsPopup {
     this.targetChannels = new Set();
     this.videoLengthThreshold = 10 * 60; // 10 minutes in seconds
     this.popupShown = false;
+    this.videoAutoPlayEnabled = true;
+    this.shortsEnabled = true;
+    this.autoPlayVideoUrl = 'https://www.youtube.com/watch?v=zZ7AimPACzc';
+    this.videoAutoPlayShown = false;
     this.init();
   }
 
@@ -16,7 +20,13 @@ class YouTubeShortsPopup {
 
   async loadSettings() {
     try {
-      const result = await chrome.storage.sync.get(['targetChannels']);
+      const result = await chrome.storage.sync.get([
+        'targetChannels',
+        'videoAutoPlayEnabled',
+        'shortsEnabled',
+        'autoPlayVideoUrl'
+      ]);
+      
       if (result.targetChannels) {
         this.targetChannels = new Set(result.targetChannels);
       } else {
@@ -26,8 +36,12 @@ class YouTubeShortsPopup {
           'ThePrimeTime'
         ]);
       }
+      
+      this.videoAutoPlayEnabled = result.videoAutoPlayEnabled !== false;
+      this.shortsEnabled = result.shortsEnabled !== false;
+      this.autoPlayVideoUrl = result.autoPlayVideoUrl || 'https://www.youtube.com/watch?v=zZ7AimPACzc';
     } catch (error) {
-      console.log('Using default channels');
+      console.log('Using default settings');
     }
   }
 
@@ -39,6 +53,7 @@ class YouTubeShortsPopup {
       if (location.href !== currentUrl) {
         currentUrl = location.href;
         this.popupShown = false;
+        this.videoAutoPlayShown = false;
         // Longer delay to allow ads to load and potentially finish
         setTimeout(() => this.checkCurrentVideo(), 5000);
       }
@@ -51,7 +66,7 @@ class YouTubeShortsPopup {
   }
 
   async checkCurrentVideo() {
-    if (!this.isVideoPage() || this.popupShown) return;
+    if (!this.isVideoPage()) return;
 
     // Retry mechanism for cases where ads might interfere
     let retries = 3;
@@ -60,9 +75,16 @@ class YouTubeShortsPopup {
       if (videoData) {
         const { channelName, duration } = videoData;
         
-        if (this.shouldShowPopup(channelName, duration)) {
-          this.showPopup();
+        // Check for YouTube Shorts popup
+        if (this.shortsEnabled && !this.popupShown && this.shouldShowPopup(channelName, duration)) {
+          this.showShortsPopup();
         }
+        
+        // Check for video auto-play popup
+        if (this.videoAutoPlayEnabled && !this.videoAutoPlayShown && this.shouldShowVideoAutoPlay(channelName, duration)) {
+          this.showVideoAutoPlayPopup();
+        }
+        
         return;
       }
       
@@ -175,14 +197,27 @@ class YouTubeShortsPopup {
     return this.targetChannels.has(channelName) && duration > this.videoLengthThreshold;
   }
 
-  async showPopup() {
-    console.log('Showing YouTube Shorts popup');
-    
-    // Create and show popup
-    this.createPopup();
+  shouldShowVideoAutoPlay(channelName, duration) {
+    return this.targetChannels.has(channelName) && duration > this.videoLengthThreshold;
   }
 
-  createPopup() {
+  async showShortsPopup() {
+    console.log('Showing YouTube Shorts popup');
+    this.popupShown = true;
+    
+    // Create and show popup
+    this.createShortsPopup();
+  }
+
+  async showVideoAutoPlayPopup() {
+    console.log('Showing Video Auto-Play popup');
+    this.videoAutoPlayShown = true;
+    
+    // Create and show video auto-play popup
+    this.createVideoAutoPlayPopup();
+  }
+
+  createShortsPopup() {
     // Remove existing popup if any
     const existingPopup = document.getElementById('youtube-shorts-popup');
     if (existingPopup) {
@@ -224,6 +259,60 @@ class YouTubeShortsPopup {
     this.makeDraggable(popup);
 
     // Popup will stay visible until manually closed
+  }
+
+  createVideoAutoPlayPopup() {
+    // Remove existing video auto-play popup if any
+    const existingPopup = document.getElementById('video-autoplay-popup');
+    if (existingPopup) {
+      existingPopup.remove();
+    }
+
+    // Create popup container
+    const popup = document.createElement('div');
+    popup.id = 'video-autoplay-popup';
+    popup.className = 'video-autoplay-popup';
+
+    // Extract video ID from URL
+    const videoId = this.extractVideoId(this.autoPlayVideoUrl);
+    const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`;
+
+    // Create popup content
+    popup.innerHTML = `
+      <div class="popup-header">
+        <h3>🎥 Auto-Play Video</h3>
+        <button class="close-btn" id="video-popup-close-btn">&times;</button>
+      </div>
+      <div class="popup-content">
+        <iframe 
+          src="${embedUrl}" 
+          frameborder="0" 
+          allowfullscreen
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          class="video-iframe">
+        </iframe>
+      </div>
+    `;
+
+    // Add popup to page
+    document.body.appendChild(popup);
+
+    // Add close button event listener
+    const closeBtn = popup.querySelector('#video-popup-close-btn');
+    closeBtn.addEventListener('click', () => {
+      popup.remove();
+    });
+
+    // Add drag functionality
+    this.makeDraggable(popup);
+
+    // Popup will stay visible until manually closed
+  }
+
+  extractVideoId(url) {
+    const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : 'zZ7AimPACzc'; // fallback to default video ID
   }
 
   makeDraggable(popup) {
@@ -279,11 +368,21 @@ class YouTubeShortsPopup {
   }
 }
 
+// Listen for settings updates from options page
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'settingsUpdated') {
+    // Reload settings when they're updated
+    if (window.youtubeShortsPopup) {
+      window.youtubeShortsPopup.loadSettings();
+    }
+  }
+});
+
 // Initialize the extension
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
-    new YouTubeShortsPopup();
+    window.youtubeShortsPopup = new YouTubeShortsPopup();
   });
 } else {
-  new YouTubeShortsPopup();
+  window.youtubeShortsPopup = new YouTubeShortsPopup();
 }
