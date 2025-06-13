@@ -109,6 +109,24 @@
   border-radius: 0;
 }
 
+/* Hide YouTube header elements inside the iframe */
+.shorts-iframe {
+  /* Position the iframe to crop out the top header area */
+  margin-top: -56px; /* Standard YouTube header height */
+  height: calc(100% + 56px);
+}
+
+/* Alternative approach using clip-path to hide the top portion */
+.popup-content {
+  overflow: hidden;
+}
+
+.popup-content .shorts-iframe {
+  clip-path: inset(56px 0 0 0); /* Clip the top 56px (header height) */
+  margin-top: -56px;
+  height: calc(100% + 56px);
+}
+
 
 
 /* Responsive design */
