@@ -1,5 +1,7 @@
 # Theo's dream Chrome Extension
 
+![Logo](logo.png)
+
 🎬 A Chrome extension that automatically shows YouTube Shorts recommendations when you watch long videos from specific channels.
 
 ## Features
@@ -86,102 +88,12 @@ youtube-shorts-popup/
 └── README.md           # This file
 ```
 
-## Technical Details
-
-### Permissions
-
-- `activeTab`: Access current YouTube tab
-- `storage`: Save user settings
-- `tabs`: Manage extension tabs
-- `https://www.youtube.com/*`: Access YouTube pages
-
-### How It Works
-
-1. **Content Script Injection**: Automatically injected into YouTube watch pages
-2. **Video Detection**: Monitors page changes and video metadata
-3. **Channel Matching**: Checks if current channel is in target list
-4. **Duration Check**: Compares video length with threshold
-5. **Popup Display**: Shows shorts recommendations when conditions are met
-
-### Browser Compatibility
-
-- **Chrome**: Version 88+ (Manifest V3 support)
-- **Edge**: Version 88+ (Chromium-based)
-- **Other Chromium browsers**: Should work with Manifest V3 support
-
-## Customization
-
-### Adding More Channels
-
-1. Open the extension settings
-2. Click "+ Add Channel"
-3. Enter the exact channel name as it appears on YouTube
-4. Click "Save Settings"
-
-### Modifying Sample Videos
-
-To change the sample shorts videos shown in the popup:
-
-1. Edit `background.js`
-2. Find the `fetchShortsVideos()` method
-3. Replace the `sampleVideos` array with your preferred videos
-4. Reload the extension
-
-### Styling Changes
-
-To customize the popup appearance:
-
-1. Edit `popup.css`
-2. Modify colors, sizes, animations as desired
-3. Reload the extension to see changes
-
-## Troubleshooting
-
-### Extension Not Working
-
-- **Check if enabled**: Verify the extension is enabled in `chrome://extensions/`
-- **Reload extension**: Click the refresh icon next to the extension
-- **Check permissions**: Ensure all required permissions are granted
-- **Clear storage**: Reset settings to default in the options page
-
-### Popup Not Showing
-
-- **Verify channel name**: Ensure the channel name exactly matches YouTube
-- **Check video length**: Video must be longer than the threshold
-- **Settings check**: Verify extension is enabled in settings
-- **Console errors**: Check browser console for JavaScript errors
-
-### Settings Not Saving
-
-- **Storage permissions**: Ensure storage permission is granted
-- **Sync issues**: Try using local storage instead of sync storage
-- **Browser restart**: Restart Chrome and try again
-
-## Development
-
-### Local Development
-
-1. Make changes to the source files
-2. Go to `chrome://extensions/`
-3. Click the refresh icon next to your extension
-4. Test the changes on YouTube
-
-### Debugging
-
-- **Content Script**: Use browser DevTools console on YouTube pages
-- **Background Script**: Click "service worker" link in extension details
-- **Options Page**: Right-click options page and select "Inspect"
-
 ## Privacy Policy
 
 - **No Data Collection**: This extension does not collect or transmit personal data
 - **Local Storage**: All settings are stored locally in your browser
 - **YouTube Access**: Only accesses YouTube pages to detect video information
 - **No Analytics**: No usage tracking or analytics
-
-## License
-
-This project is open source and available under the MIT License.
 
 ## Contributing
 
