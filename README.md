@@ -17,7 +17,7 @@
 
 1. **Download the Extension**
    - Clone or download this repository to your computer
-   - Extract the files to a folder (e.g., `youtube-shorts-popup`)
+   - Extract the files to a folder (e.g., `Theo's dream`)
 
 2. **Open Chrome Extensions Page**
    - Open Google Chrome
