@@ -1,6 +1,6 @@
 # Theo's dream Chrome Extension
 
-![Logo](logo.png)
+<img src="logo.png" alt="Logo" width="128" height="128">
 
 🎬 A Chrome extension that automatically shows YouTube Shorts recommendations when you watch long videos from specific channels.
 
