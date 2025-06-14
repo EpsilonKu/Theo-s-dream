@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Theo's dream - Settings</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        :root {
+            --background: 0 0% 100%;
+            --foreground: 222.2 84% 4.9%;
+            --card: 0 0% 100%;
+            --card-foreground: 222.2 84% 4.9%;
+            --popover: 0 0% 100%;
+            --popover-foreground: 222.2 84% 4.9%;
+            --primary: 221.2 83.2% 53.3%;
+            --primary-foreground: 210 40% 98%;
+            --secondary: 210 40% 96%;
+            --secondary-foreground: 222.2 84% 4.9%;
+            --muted: 210 40% 96%;
+            --muted-foreground: 215.4 16.3% 46.9%;
+            --accent: 210 40% 96%;
+            --accent-foreground: 222.2 84% 4.9%;
+            --destructive: 0 84.2% 60.2%;
+            --destructive-foreground: 210 40% 98%;
+            --border: 214.3 31.8% 91.4%;
+            --input: 214.3 31.8% 91.4%;
+            --ring: 221.2 83.2% 53.3%;
+            --radius: 0.5rem;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,142 +37,192 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: hsl(var(--muted));
+            color: hsl(var(--foreground));
+            line-height: 1.5;
             min-height: 100vh;
-            padding: 20px;
+            padding: 1rem;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 48rem;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
+            background-color: hsl(var(--card));
+            border: 1px solid hsl(var(--border));
+            border-radius: calc(var(--radius) + 2px);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
 
         .header {
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
-            padding: 30px;
-            text-align: center;
+            border-bottom: 1px solid hsl(var(--border));
+            padding: 1.5rem;
         }
 
         .header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: hsl(var(--foreground));
+            margin-bottom: 0.5rem;
         }
 
         .header p {
-            opacity: 0.9;
-            font-size: 16px;
+            color: hsl(var(--muted-foreground));
+            font-size: 0.875rem;
         }
 
         .content {
-            padding: 40px;
+            padding: 1.5rem;
         }
 
         .section {
-            margin-bottom: 40px;
+            margin-bottom: 2rem;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
         }
 
         .section h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 20px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: hsl(var(--foreground));
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.5rem;
+        }
+
+        .section p {
+            color: hsl(var(--muted-foreground));
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
         }
 
         .toggle-container {
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            justify-content: space-between;
+            padding: 1rem;
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+            background-color: hsl(var(--card));
+        }
+
+        .toggle-container:hover {
+            background-color: hsl(var(--accent));
+        }
+
+        .toggle-container span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: hsl(var(--foreground));
         }
 
         .toggle {
             position: relative;
-            width: 60px;
-            height: 30px;
-            background: #ddd;
-            border-radius: 15px;
+            width: 3rem;
+            height: 1.5rem;
+            background-color: hsl(var(--input));
+            border-radius: 0.75rem;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background-color 0.2s ease-in-out;
+            border: 2px solid transparent;
+        }
+
+        .toggle:focus-visible {
+            outline: 2px solid hsl(var(--ring));
+            outline-offset: 2px;
         }
 
         .toggle.active {
-            background: #4ecdc4;
+            background-color: hsl(var(--primary));
         }
 
         .toggle::after {
             content: '';
             position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 24px;
-            height: 24px;
-            background: white;
+            top: 50%;
+            left: 0.125rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            background-color: white;
             border-radius: 50%;
-            transition: transform 0.3s;
+            transition: transform 0.2s ease-in-out;
+            transform: translateY(-50%);
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
         }
 
         .toggle.active::after {
-            transform: translateX(30px);
+            transform: translateY(-50%) translateX(1.275rem);
         }
 
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.5rem;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: hsl(var(--foreground));
+            font-weight: 500;
+            font-size: 0.875rem;
         }
 
         .input-group input,
         .input-group textarea {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: border-color 0.3s;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid hsl(var(--border));
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
 
         .input-group input:focus,
         .input-group textarea:focus {
             outline: none;
-            border-color: #4ecdc4;
+            border-color: hsl(var(--ring));
+            box-shadow: 0 0 0 2px hsl(var(--ring) / 0.2);
+        }
+
+        .input-group input::placeholder {
+            color: hsl(var(--muted-foreground));
         }
 
         .channels-container {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            background-color: hsl(var(--muted));
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid hsl(var(--border));
+            margin-bottom: 1rem;
         }
 
         .channel-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            padding: 10px;
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #e9ecef;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background-color: hsl(var(--card));
+            border-radius: var(--radius);
+            border: 1px solid hsl(var(--border));
+        }
+
+        .channel-item:last-child {
+            margin-bottom: 0;
         }
 
         .channel-item input {
             flex: 1;
             border: none;
-            padding: 5px;
-            font-size: 14px;
+            padding: 0.25rem;
+            font-size: 0.875rem;
+            background: transparent;
+            color: hsl(var(--foreground));
         }
 
         .channel-item input:focus {
@@ -155,130 +230,176 @@
         }
 
         .remove-btn {
-            background: #ff6b6b;
-            color: white;
+            background-color: hsl(var(--destructive));
+            color: hsl(var(--destructive-foreground));
             border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 0.25rem 0.5rem;
+            border-radius: calc(var(--radius) - 2px);
             cursor: pointer;
-            font-size: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out;
         }
 
         .remove-btn:hover {
-            background: #ff5252;
+            background-color: hsl(var(--destructive) / 0.9);
         }
 
         .add-channel-btn {
-            background: #4ecdc4;
-            color: white;
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
             cursor: pointer;
-            font-size: 14px;
-            margin-top: 10px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 0.75rem;
+            transition: background-color 0.2s ease-in-out;
         }
 
         .add-channel-btn:hover {
-            background: #45b7aa;
+            background-color: hsl(var(--primary) / 0.9);
+        }
+
+        .add-channel-btn:focus-visible {
+            outline: 2px solid hsl(var(--ring));
+            outline-offset: 2px;
         }
 
         .slider-container {
-            margin: 20px 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-container label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: hsl(var(--foreground));
+            font-weight: 500;
+            font-size: 0.875rem;
         }
 
         .slider {
             width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #ddd;
+            height: 0.5rem;
+            border-radius: var(--radius);
+            background: hsl(var(--muted));
             outline: none;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
             -webkit-appearance: none;
+        }
+
+        .slider:hover {
+            background: hsl(var(--muted) / 0.8);
         }
 
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 1.25rem;
+            height: 1.25rem;
             border-radius: 50%;
-            background: #4ecdc4;
+            background: hsl(var(--primary));
             cursor: pointer;
+            border: 2px solid hsl(var(--background));
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background: hsl(var(--primary) / 0.9);
+            transform: scale(1.1);
         }
 
         .slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
+            width: 1.25rem;
+            height: 1.25rem;
             border-radius: 50%;
-            background: #4ecdc4;
+            background: hsl(var(--primary));
             cursor: pointer;
-            border: none;
+            border: 2px solid hsl(var(--background));
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
         }
 
         .slider-value {
             text-align: center;
-            margin-top: 10px;
-            font-weight: 600;
-            color: #4ecdc4;
+            margin-top: 0.5rem;
+            font-weight: 500;
+            color: hsl(var(--muted-foreground));
+            font-size: 0.875rem;
         }
 
         .buttons {
             display: flex;
-            gap: 15px;
+            gap: 0.75rem;
             justify-content: center;
-            margin-top: 40px;
+            margin-top: 2rem;
         }
 
         .btn {
-            padding: 12px 30px;
+            padding: 0.75rem 1.5rem;
             border: none;
-            border-radius: 25px;
+            border-radius: var(--radius);
             cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            background-color: hsl(var(--primary));
+            color: hsl(var(--primary-foreground));
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, #5a6fd8, #6a4190);
-            transform: translateY(-2px);
+            background-color: hsl(var(--primary) / 0.9);
+        }
+
+        .btn-primary:focus-visible {
+            outline: 2px solid hsl(var(--ring));
+            outline-offset: 2px;
         }
 
         .btn-secondary {
-            background: #f8f9fa;
-            color: #666;
-            border: 2px solid #e9ecef;
+            background-color: hsl(var(--secondary));
+            color: hsl(var(--secondary-foreground));
+            border: 1px solid hsl(var(--border));
         }
 
         .btn-secondary:hover {
-            background: #e9ecef;
-            color: #333;
+            background-color: hsl(var(--secondary) / 0.8);
+        }
+
+        .btn-secondary:focus-visible {
+            outline: 2px solid hsl(var(--ring));
+            outline-offset: 2px;
         }
 
         .status-message {
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
+            padding: 0.75rem;
+            border-radius: var(--radius);
+            margin-top: 1rem;
             text-align: center;
-            font-weight: 600;
+            font-weight: 500;
+            font-size: 0.875rem;
             display: none;
+            border: 1px solid;
         }
 
         .status-message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background-color: hsl(120 60% 95%);
+            color: hsl(120 60% 20%);
+            border-color: hsl(120 60% 80%);
         }
 
         .status-message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background-color: hsl(var(--destructive) / 0.1);
+            color: hsl(var(--destructive));
+            border-color: hsl(var(--destructive) / 0.3);
         }
 
         @media (max-width: 600px) {
