@@ -9,6 +9,7 @@ class YouTubeShortsPopup {
     this.shortsEnabled = true;
     this.autoPlayVideoUrl = 'https://www.youtube.com/watch?v=zZ7AimPACzc';
     this.videoAutoPlayShown = false;
+    this.tabId = null; // Store tabId received from background script
     this.init();
   }
 
@@ -368,12 +369,18 @@ class YouTubeShortsPopup {
   }
 }
 
-// Listen for settings updates from options page
+// Listen for messages from background script and options page
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'settingsUpdated') {
     // Reload settings when they're updated
     if (window.youtubeShortsPopup) {
       window.youtubeShortsPopup.loadSettings();
+    }
+  } else if (message.action === 'tabUpdated') {
+    // Store tabId received from background script
+    if (window.youtubeShortsPopup) {
+      window.youtubeShortsPopup.tabId = message.tabId;
+      console.log('TabId received:', message.tabId);
     }
   }
 });

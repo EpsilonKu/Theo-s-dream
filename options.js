@@ -29,7 +29,7 @@ class OptionsManager {
       ]);
       
       this.settings = {
-        targetChannels: result.targetChannels || [],
+        targetChannels: result.targetChannels || ['Theo - t3․gg','ThePrimeTime'],
         videoLengthThreshold: result.videoLengthThreshold || 10,
         shortsEnabled: result.shortsEnabled !== false,
         videoAutoPlayEnabled: result.videoAutoPlayEnabled !== false,
@@ -111,6 +111,7 @@ class OptionsManager {
   renderChannels() {
     const channelsList = document.getElementById('channelsList');
     channelsList.innerHTML = '';
+    console.log ('targetChannels', this.settings.targetChannels)
 
     this.settings.targetChannels.forEach((channel, index) => {
       const channelItem = this.createChannelItem(channel, index);

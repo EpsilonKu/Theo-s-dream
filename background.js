@@ -37,10 +37,10 @@ class BackgroundService {
 
   async setDefaultSettings() {
     const defaultSettings = {
-      targetChannels: [],
+      targetChannels: ['Theo - t3․gg', 'ThePrimeTime'],
       videoLengthThreshold: 10, // minutes
       shortsEnabled: true,
-      videoAutoPlayEnabled: true,
+      videoAutoPlayEnabled: false,
       autoPlayVideoUrl: 'https://www.youtube.com/watch?v=zZ7AimPACzc'
     };
 
@@ -114,7 +114,7 @@ class BackgroundService {
     } catch (error) {
       console.error('Error getting settings:', error);
       return {
-        targetChannels: ['Theo - t3․gg',],
+        targetChannels: ['Theo - t3․gg','ThePrimeTime'],
         videoLengthThreshold: 10
       };
     }
@@ -177,17 +177,19 @@ class BackgroundService {
   }
 
   handleTabUpdate(tabId, changeInfo, tab) {
-    // Inject content script when YouTube page loads
+    // Send tabId to content script when YouTube page loads
     if (changeInfo.status === 'complete' && 
         tab.url && 
         tab.url.includes('youtube.com/watch')) {
       
-      chrome.scripting.executeScript({
-        target: { tabId: tabId },
-        files: ['content.js']
+      // Send tabId to the content script
+      chrome.tabs.sendMessage(tabId, {
+        action: 'tabUpdated',
+        tabId: tabId,
+        url: tab.url
       }).catch(error => {
-        // Script might already be injected, ignore error
-        console.log('Content script injection skipped:', error.message);
+        // Content script might not be ready yet, ignore error
+        console.log('Message to content script failed:', error.message);
       });
     }
   }
